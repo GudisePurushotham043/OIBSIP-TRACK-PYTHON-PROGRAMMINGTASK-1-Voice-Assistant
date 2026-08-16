@@ -1,0 +1,7 @@
+SpeechRecognition>=3.10.0
+pyttsx3>=2.90
+sounddevice>=0.4.6      # PyAudio replacement — works on Python 3.14+
+numpy>=1.26.0           # Required by sounddevice for audio arrays
+requests>=2.31.0
+python-dotenv>=1.0.0
+wikipedia>=1.4.0

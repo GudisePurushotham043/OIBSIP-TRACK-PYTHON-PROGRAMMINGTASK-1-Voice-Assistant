@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ assistant_name }} — AI Voice Assistant</title>
+  <meta name="description" content="Talk to {{ assistant_name }}, your AI-powered personal voice assistant. Ask about weather, set reminders, search the web and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <!-- Animated Background Orbs -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- App Shell -->
+  <div class="app-shell">
+
+    <!-- ── Sidebar ──────────────────────────────────────── -->
+    <aside class="sidebar" role="complementary" aria-label="Assistant info and quick actions">
+      <div class="brand">
+        <div class="avatar-ring">
+          <div class="avatar" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="16" r="10" fill="url(#g1)"/>
+              <ellipse cx="24" cy="38" rx="16" ry="10" fill="url(#g1)"/>
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#a78bfa"/>
+                  <stop offset="1" stop-color="#38bdf8"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        <h1 class="brand-name">{{ assistant_name }}</h1>
+        <p class="brand-tagline">AI Voice Assistant</p>
+        <div class="status-badge" id="statusBadge">
+          <span class="status-dot"></span>
+          <span id="statusText">Ready</span>
+        </div>
+      </div>
+
+      <nav class="capabilities" aria-label="What I can do">
+        <h2 class="cap-heading">What I Can Do</h2>
+        <ul class="cap-list">
+          <li><span class="cap-icon">🕐</span>Date &amp; Time</li>
+          <li><span class="cap-icon">🔍</span>Web Search</li>
+          <li><span class="cap-icon">🌤️</span>Live Weather</li>
+          <li><span class="cap-icon">⏰</span>Reminders</li>
+          <li><span class="cap-icon">📧</span>Send Email</li>
+          <li><span class="cap-icon">🧠</span>Knowledge Q&amp;A</li>
+          <li><span class="cap-icon">🔗</span>Custom Commands</li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-icon" id="toggleSpeech" title="Toggle voice output" aria-label="Toggle voice output" aria-pressed="true">
+          <svg id="speakerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+        <button class="btn-icon" id="clearChat" title="Clear conversation" aria-label="Clear conversation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── Main Chat Area ─────────────────────────────────── -->
+    <main class="chat-main" role="main">
+
+      <!-- Top Bar -->
+      <header class="chat-header">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <span class="chat-header-title">{{ assistant_name }}</span>
+        <div class="header-status">
+          <span class="header-dot" id="headerDot"></span>
+          <span id="headerStatus">Online</span>
+        </div>
+      </header>
+
+      <!-- Messages -->
+      <div class="messages-wrap" id="messagesWrap" role="log" aria-live="polite" aria-label="Conversation">
+        <!-- Welcome message injected by JS -->
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="chips-row" id="chipsRow" role="region" aria-label="Quick suggestions">
+        <button class="chip" data-msg="What time is it?">🕐 Time</button>
+        <button class="chip" data-msg="What is today's date?">📅 Date</button>
+        <button class="chip" data-msg="What is the weather in New York?">🌤️ Weather</button>
+        <button class="chip" data-msg="Who created Python?">🧠 Knowledge</button>
+        <button class="chip" data-msg="Remind me in 1 minute">⏰ Reminder</button>
+        <button class="chip" data-msg="Open GitHub">🔗 GitHub</button>
+        <button class="chip" data-msg="Help">❓ Help</button>
+      </div>
+
+      <!-- Input Row -->
+      <div class="input-row">
+        <!-- Mic Button -->
+        <button class="mic-btn" id="micBtn" aria-label="Hold to speak" title="Click to speak">
+          <span class="mic-rings" aria-hidden="true"></span>
+          <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="2" width="6" height="13" rx="3"/>
+            <path d="M5 10a7 7 0 0 0 14 0M12 19v3M8 22h8"/>
+          </svg>
+        </button>
+
+        <!-- Text Input -->
+        <div class="input-container">
+          <input
+            type="text"
+            id="textInput"
+            class="text-input"
+            placeholder="Type a message or use the mic..."
+            aria-label="Type a command"
+            maxlength="500"
+            autocomplete="off"
+          />
+          <button class="send-btn" id="sendBtn" aria-label="Send message">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Speech not supported warning -->
+      <div class="speech-warning" id="speechWarning" role="alert" style="display:none">
+        ⚠️ Voice input not supported in this browser. Please use Chrome or Edge for the best experience.
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Reminder Toast Container -->
+  <div class="toast-container" id="toastContainer" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Email Modal -->
+  <div class="modal-overlay" id="emailModal" role="dialog" aria-modal="true" aria-labelledby="emailModalTitle" style="display:none">
+    <div class="modal-card">
+      <h2 id="emailModalTitle" class="modal-title">📧 Send an Email</h2>
+      <p class="modal-sub">Fill in the details and {{ assistant_name }} will send it for you.</p>
+      <div class="form-group">
+        <label for="emailTo">To (email address)</label>
+        <input type="email" id="emailTo" placeholder="recipient@example.com" class="modal-input" />
+      </div>
+      <div class="form-group">
+        <label for="emailSubject">Subject</label>
+        <input type="text" id="emailSubject" placeholder="Email subject" class="modal-input" />
+      </div>
+      <div class="form-group">
+        <label for="emailBody">Message</label>
+        <textarea id="emailBody" rows="4" placeholder="Your message here..." class="modal-input modal-textarea"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="emailCancel">Cancel</button>
+        <button class="btn-primary" id="emailSend">Send Email</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.ASSISTANT_NAME = "{{ assistant_name }}";
+  </script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

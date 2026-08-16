@@ -1,0 +1,14 @@
+{
+  "assistant_name": "Nova",
+  "tts_rate": 175,
+  "tts_volume": 1.0,
+  "default_city": "New York",
+  "custom_commands": {
+    "open github": "https://github.com",
+    "open youtube": "https://youtube.com",
+    "open google": "https://google.com",
+    "open stackoverflow": "https://stackoverflow.com",
+    "open python documentation": "https://docs.python.org/3/",
+    "open wikipedia": "https://www.wikipedia.org"
+  }
+}
